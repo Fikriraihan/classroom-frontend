@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { type BaseKey, useShowButton } from "@refinedev/core";
-import { Eye } from "lucide-react";
-import React from "react";
+import { Button } from '@/components/ui/button';
+import { type BaseKey, useShowButton } from '@refinedev/core';
+import { Eye } from 'lucide-react';
+import React from 'react';
 
 type ShowButtonProps = {
   /**
@@ -36,7 +36,7 @@ export const ShowButton = React.forwardRef<
 >(
   (
     { resource, recordItemId, accessControl, meta, children, onClick, ...rest },
-    ref
+    ref,
   ) => {
     const { hidden, disabled, LinkComponent, to, label } = useShowButton({
       resource,
@@ -75,7 +75,7 @@ export const ShowButton = React.forwardRef<
         </LinkComponent>
       </Button>
     );
-  }
+  },
 );
 
-ShowButton.displayName = "ShowButton";
+ShowButton.displayName = 'ShowButton';

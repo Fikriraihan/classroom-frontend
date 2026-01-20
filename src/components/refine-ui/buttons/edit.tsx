@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { type BaseKey, useEditButton } from "@refinedev/core";
-import { Pencil } from "lucide-react";
-import React from "react";
+import { Button } from '@/components/ui/button';
+import { type BaseKey, useEditButton } from '@refinedev/core';
+import { Pencil } from 'lucide-react';
+import React from 'react';
 
 type EditButtonProps = {
   /**
@@ -36,7 +36,7 @@ export const EditButton = React.forwardRef<
 >(
   (
     { resource, recordItemId, accessControl, meta, children, onClick, ...rest },
-    ref
+    ref,
   ) => {
     const { hidden, disabled, LinkComponent, to, label } = useEditButton({
       resource,
@@ -75,7 +75,7 @@ export const EditButton = React.forwardRef<
         </LinkComponent>
       </Button>
     );
-  }
+  },
 );
 
-EditButton.displayName = "EditButton";
+EditButton.displayName = 'EditButton';
