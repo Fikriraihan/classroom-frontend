@@ -24,11 +24,10 @@ import { CreateView } from "@/components/refine-ui/views/create-view";
 import { Breadcrumb } from "@/components/refine-ui/layout/breadcrumb";
 
 import { Textarea } from "@/components/ui/textarea";
-import { useBack, useList } from "@refinedev/core";
+import { useBack } from "@refinedev/core";
 import { Loader2 } from "lucide-react";
 import { classSchema } from "@/lib/schema";
 import UploadWidget from "@/components/upload-widget";
-import { Subject, User } from "@/types";
 import z from "zod";
 
 
@@ -47,11 +46,13 @@ const Create = () => {
     handleSubmit,
     formState: { isSubmitting, errors },
     control,
+    refineCore: { onFinish },
   } = form;
 
   const onSubmit = async (values: z.infer<typeof classSchema>) => {
     try {
       console.log(values);
+      await onFinish(values);
     } catch (error) {
       console.error("Error creating class:", error);
     }
@@ -83,7 +84,7 @@ const Create = () => {
 
   const bannerPublicId = form.watch('bannerCldPubId')
 
-  const setBannerImage = (file, field) => {
+  const setBannerImage = (file: { url: string; publicId: string } | null, field: { onChange: (value: string) => void }) => {
     if (file) {
       field.onChange(file.url)
       form.setValue('bannerCldPubId', file.publicId, {
@@ -131,7 +132,7 @@ const Create = () => {
                     <FormItem>
                       <FormLabel>Banner Image <span className="text-orange-600">*</span></FormLabel>
                       <FormControl>
-                        <UploadWidget value={field.value ? { url: field.value, publicId: bannerPublicId ?? '' } : null} onChange={(file: any, field: any) => setBannerImage(file, field)} />
+                        <UploadWidget value={field.value ? { url: field.value, publicId: bannerPublicId ?? '' } : null} onChange={(file) => setBannerImage(file, field)} />
                       </FormControl>
                       <FormMessage />
                       {errors.bannerCldPubId && !errors.bannerUrl && (
@@ -243,6 +244,7 @@ const Create = () => {
                           <Input
                             type="number"
                             placeholder="30"
+                            min={0}
                             onChange={(e) => {
                               const value = e.target.value;
                               field.onChange(value ? Number(value) : undefined);

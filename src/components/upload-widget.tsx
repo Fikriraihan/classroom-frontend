@@ -24,7 +24,7 @@ const UploadWidget = ({ value = null, onChange, disabled = false }: {
     if (typeof window === 'undefined') return;
 
     const initializeWidget = () => {
-      if (!window.cloudinary || widgetRef.current) return false
+      if (!window.cloudinary || widgetRef.current) return false;
 
       widgetRef.current = window.cloudinary.createUploadWidget({
         cloudName: CLOUDINARY_CLOUD_NAME,
@@ -34,6 +34,10 @@ const UploadWidget = ({ value = null, onChange, disabled = false }: {
         maxFileSize: 5000000,
         clientAllowedFormats: ['png', 'jpg', 'jpeg', 'webp']
       }, (error, result) => {
+        if (error) {
+          console.error('Upload failed:', error);
+          return;
+        }
         if (!error && result.event === 'success') {
           const payload: UploadWidgetValue = {
             url: result.info.secure_url,
@@ -44,6 +48,7 @@ const UploadWidget = ({ value = null, onChange, disabled = false }: {
           onChangeRef.current?.(payload)
         }
       })
+      return true
     }
 
     if (initializeWidget()) return;
@@ -79,7 +84,7 @@ const UploadWidget = ({ value = null, onChange, disabled = false }: {
             <UploadCloud className='icon' />
             <div>
               <p>Click to upload photo</p>
-              <p>PNG, JPG up to 5MB</p>
+              <p>PNG, JPG, WebP up to 5MB</p>
             </div>
           </div>
         </div>
